@@ -81,9 +81,5 @@ backend/
 ├── index.js
 ```
 
-## License
-
-This project is licensed under the MIT License.
-
 ---
 **Maintainer:** [gauravk-io](https://github.com/gauravk-io)
