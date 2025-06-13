@@ -1,21 +1,32 @@
 # AuthSystem
 
-A Node.js and Express-based authentication system that provides user signup, login, and logout functionality with secure password handling and JWT token authentication. The backend is connected to a MongoDB database, ensuring user data is securely managed.
+A Node.js/Express + React authentication system that provides secure user signup, login, and logout functionality with JWT-based authentication and MongoDB persistence. This full-stack project includes both backend and frontend, and is suitable as a boilerplate for building secure, modern authentication workflows.
+
+---
 
 ## Features
 
-- **User Signup**: Users can sign up with email, password, and name. Passwords are hashed using bcrypt, and verification tokens are generated for account verification.
-- **Login & Logout**: Secure login and logout endpoints with token-based authentication using JWT.
-- **MongoDB Integration**: All user data is stored in a MongoDB database via Mongoose.
-- **Token Management**: JWT tokens are set as HTTP-only cookies for secure session management.
-- **Account Verification**: Handles verification tokens and expiration logic for account activation and password resets.
+- **User Signup**: Registration via email, password, and name. Passwords are hashed using bcrypt. Account verification handled via tokens.
+- **Login & Logout**: Secure endpoints with JWT token-based authentication. Session managed via HTTP-only cookies.
+- **MongoDB Integration**: All user data is stored in MongoDB via Mongoose.
+- **JWT Token Management**: Tokens are issued and stored securely for each session.
+- **Account Verification**: Handles verification tokens for account activation and password resets.
+- **Password Reset**: Secure password reset flow, including email notifications.
+- **Frontend**: Built with React, Zustand for state management, Vite, and TailwindCSS for UI.
+- **API Security**: CORS, cookie parsing, and environment-based config.
+
+---
 
 ## Tech Stack
 
 - **Backend**: Node.js, Express.js
+- **Frontend**: React, Zustand, Vite, TailwindCSS
 - **Database**: MongoDB (Mongoose)
-- **Authentication**: JWT (JSON Web Tokens), bcrypt
-- **Environment Management**: dotenv
+- **Authentication**: JWT, bcrypt
+- **Email**: Nodemailer/Mailtrap for transactional emails
+- **Env Management**: dotenv
+
+---
 
 ## Getting Started
 
@@ -47,22 +58,37 @@ A Node.js and Express-based authentication system that provides user signup, log
    PORT=5000
    ```
 
-4. **Start the server**
+4. **Start the backend server**
    ```bash
    npm start
    ```
-
    The backend will run on `http://localhost:5000/` by default.
+
+5. **Start the frontend**
+   ```bash
+   cd ../frontend
+   npm install
+   npm run dev
+   ```
+   The frontend will run on `http://localhost:5173/` by default.
+
+---
 
 ## API Endpoints
 
-All endpoints are prefixed with `/app/auth`.
+All endpoints are prefixed with `/api/auth`.
 
-| Method | Endpoint        | Description            |
-|--------|----------------|------------------------|
-| POST   | /signup        | Register a new user    |
-| POST   | /login         | User login             |
-| POST   | /logout        | User logout            |
+| Method | Endpoint            | Description                |
+|--------|---------------------|----------------------------|
+| POST   | /signup             | Register a new user        |
+| POST   | /login              | User login                 |
+| POST   | /logout             | User logout                |
+| POST   | /forgot-password    | Send reset password email  |
+| POST   | /reset-password/:token | Reset user password      |
+| POST   | /verify-email       | Verify email with code     |
+| GET    | /check-auth         | Validate user session      |
+
+---
 
 ## Project Structure
 
@@ -78,8 +104,34 @@ backend/
 │   └── auth.route.js
 ├── utils/
 │   └── generateTokenAndSetCookie.js
-├── index.js
+├── mailtrap/
+│   └── emailTemplates.js
+└── index.js
+
+frontend/
+├── src/
+│   ├── App.jsx
+│   ├── store/
+│   │   └── authStore.js
+│   ├── components/
+│   │   └── PasswordStrengthMeter.jsx
+│   └── index.css
+├── index.html
+├── vite.config.js
+└── eslint.config.js
 ```
 
 ---
+
+## Security & Best Practices
+
+- Passwords are hashed with bcrypt before storage.
+- JWT tokens are stored as HTTP-only cookies.
+- Includes password reset and account verification via email.
+- CORS is configured for secure cross-origin requests.
+- Environment variables manage secrets and configuration.
+
+---
+---
+
 **Maintainer:** [gauravk-io](https://github.com/gauravk-io)
