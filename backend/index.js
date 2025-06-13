@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 // import { connect } from 'mongoose';
 import cookieParser from 'cookie-parser';
 
@@ -12,10 +13,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
 app.use(express.json()); // allows us to parse incoming requests: req.body
 app.use(cookieParser()); // allow us to parse incoming cookies
 
-app.use("/app/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT, () => {
     connectDB();

@@ -1,20 +1,30 @@
 import React from 'react';
 import { motion } from "framer-motion";
 import Input from "../components/Input";
-import { Lock, Mail, User } from "lucide-react";
+import { Loader, Lock, Mail, User } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
+import { useAuthStore } from '../store/authStore';
 
 
 const SignUpPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const { signup, error, isLoading } = useAuthStore();
 
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    try {
+      await signup(email, password, name);
+      navigate("/verify-email");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
 
@@ -38,6 +48,7 @@ const SignUpPage = () => {
             placeholder='Full Name'
             value={name}
             onChange={(e) => setName(e.target.value)}
+            autoComplete='name'
           />
           <Input
             icon={Mail}
@@ -45,6 +56,7 @@ const SignUpPage = () => {
             placeholder='Email Address'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete='email'
           />
           <Input
             icon={Lock}
@@ -52,8 +64,9 @@ const SignUpPage = () => {
             placeholder='Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete='current-password'
           />
-
+          {error && <p className='text-red-500 font-semibold mt-2'>{error}</p>}
           <PasswordStrengthMeter password={password} />
 
 
@@ -64,9 +77,10 @@ const SignUpPage = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             type='submit'
+            disabled={isLoading}
 
           >
-            Sign Up
+            {isLoading ? <Loader className=' animate-spin mx-auto' size={24} /> : "Sign Up"}
           </motion.button>
         </form>
       </div>
